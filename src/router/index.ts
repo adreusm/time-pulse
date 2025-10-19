@@ -3,7 +3,7 @@ import TimerView from '../views/TimerView.vue'
 import SettingsView from '../views/SettingsView.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/time-pulse/'),
   routes: [
     {
       path: '/',

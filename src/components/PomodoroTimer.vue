@@ -112,6 +112,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useSettings } from '../composables/useTheme'
+import rainSound from '@/assets/sound_rain.mp3'
+import campfireSound from '@/assets/sound_campfire.mp3'
 
 const { settings } = useSettings()
 
@@ -265,8 +267,8 @@ const toggleSound = (soundType: string) => {
 }
 
 const playSound = (soundType: string) => {
-  const audioFile = soundType === 'rain' ? 'sound_rain.mp3' : 'sound_campfire.mp3'
-  const audio = new Audio(`/src/assets/${audioFile}`)
+  const audioFile = soundType === 'rain' ? rainSound : campfireSound
+  const audio = new Audio(audioFile)
   audio.loop = true
   audio.volume = volume.value
   

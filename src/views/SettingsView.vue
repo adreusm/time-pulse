@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import { useSettings, useTheme } from '../composables/useTheme'
 
 const { settings, updateSettings, resetSettings } = useSettings()

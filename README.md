@@ -151,24 +151,6 @@ src/
 - Audio loop management
 - Browser compatibility handling
 
-## 🎨 Customization
-
-### Adding New Background Sounds
-1. Add your audio file to `src/assets/`
-2. Update the `playSound` function in `PomodoroTimer.vue`
-3. Add a new sound button in the template
-4. Update the sound state management
-
-### Creating New Presets
-1. Add your preset to the `presets` object in `SettingsView.vue`
-2. Create a new preset button in the template
-3. Update the `applyPreset` function
-
-### Styling Customization
-- Modify CSS custom properties in `style.css`
-- Update component-specific styles
-- Add new theme variants
-
 ## 📦 Available Scripts
 
 - `npm run dev` - Start development server
@@ -187,13 +169,6 @@ src/
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with [Vue 3](https://vuejs.org/)
-- Powered by [Vite](https://vitejs.dev/)
-- Styled with modern CSS
-- Audio files from [Freesound](https://freesound.org/)
 
 ## 📞 Support
 

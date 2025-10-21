@@ -295,7 +295,8 @@ h2 {
 .input-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .duration-btn {
@@ -409,6 +410,7 @@ h2 {
 @media (max-width: 768px) {
   .settings-view {
     padding: 1rem;
+    width: 100%;
   }
   
   h1 {
@@ -426,11 +428,6 @@ h2 {
   .action-buttons {
     flex-direction: column;
     align-items: center;
-  }
-  
-  .header-controls {
-    flex-direction: column;
-    gap: 0.5rem;
   }
 }
 </style>

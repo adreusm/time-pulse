@@ -98,6 +98,7 @@ h1 {
 @media (max-width: 768px) {
   .timer-view {
     padding: 1rem;
+    width: 100%;
   }
   
   h1 {

@@ -1,3 +1,78 @@
+<script setup lang="ts">
+import { reactive, watch } from 'vue'
+import { useSettings, useTheme } from '../composables/useTheme'
+
+const { settings, updateSettings, resetSettings } = useSettings()
+const { isDarkMode, toggleTheme } = useTheme()
+
+// Local settings for editing
+const localSettings = reactive({
+  workDuration: settings.value.workDuration,
+  shortBreakDuration: settings.value.shortBreakDuration,
+  longBreakDuration: settings.value.longBreakDuration
+})
+
+// Watch for external settings changes
+watch(settings, (newSettings) => {
+  localSettings.workDuration = newSettings.workDuration
+  localSettings.shortBreakDuration = newSettings.shortBreakDuration
+  localSettings.longBreakDuration = newSettings.longBreakDuration
+}, { deep: true })
+
+// Duration adjustment functions
+const adjustDuration = (type: keyof typeof localSettings, delta: number, min: number, max: number) => {
+  const current = localSettings[type]
+  const newValue = Math.max(min, Math.min(max, current + delta))
+  localSettings[type] = newValue
+}
+
+const decreaseWorkDuration = () => adjustDuration('workDuration', -1, 1, 60)
+const increaseWorkDuration = () => adjustDuration('workDuration', 1, 1, 60)
+const decreaseShortBreak = () => adjustDuration('shortBreakDuration', -1, 1, 30)
+const increaseShortBreak = () => adjustDuration('shortBreakDuration', 1, 1, 30)
+const decreaseLongBreak = () => adjustDuration('longBreakDuration', -1, 1, 60)
+const increaseLongBreak = () => adjustDuration('longBreakDuration', 1, 1, 60)
+
+// Preset configurations
+const presets = {
+  classic: { workDuration: 25, shortBreakDuration: 5, longBreakDuration: 15 },
+  intense: { workDuration: 45, shortBreakDuration: 10, longBreakDuration: 20 },
+  light: { workDuration: 15, shortBreakDuration: 3, longBreakDuration: 10 },
+  marathon: { workDuration: 60, shortBreakDuration: 15, longBreakDuration: 30 }
+}
+
+const applyPreset = (presetName: keyof typeof presets) => {
+  const preset = presets[presetName]
+  localSettings.workDuration = preset.workDuration
+  localSettings.shortBreakDuration = preset.shortBreakDuration
+  localSettings.longBreakDuration = preset.longBreakDuration
+}
+
+const saveSettings = () => {
+  updateSettings(localSettings)
+  // Show success feedback
+  const saveBtn = document.querySelector('.save-btn') as HTMLButtonElement
+  if (saveBtn) {
+    const originalText = saveBtn.innerHTML
+    saveBtn.innerHTML = '✅ Saved!'
+    saveBtn.style.background = '#4CAF50'
+    setTimeout(() => {
+      saveBtn.innerHTML = originalText
+      saveBtn.style.background = ''
+    }, 2000)
+  }
+}
+
+const resetToDefaults = () => {
+  if (confirm('Are you sure you want to reset all settings to defaults?')) {
+    resetSettings()
+    localSettings.workDuration = settings.value.workDuration
+    localSettings.shortBreakDuration = settings.value.shortBreakDuration
+    localSettings.longBreakDuration = settings.value.longBreakDuration
+  }
+}
+</script>
+
 <template>
   <div class="settings-view">
     <div class="header">
@@ -109,81 +184,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { reactive, watch } from 'vue'
-import { useSettings, useTheme } from '../composables/useTheme'
-
-const { settings, updateSettings, resetSettings } = useSettings()
-const { isDarkMode, toggleTheme } = useTheme()
-
-// Local settings for editing
-const localSettings = reactive({
-  workDuration: settings.value.workDuration,
-  shortBreakDuration: settings.value.shortBreakDuration,
-  longBreakDuration: settings.value.longBreakDuration
-})
-
-// Watch for external settings changes
-watch(settings, (newSettings) => {
-  localSettings.workDuration = newSettings.workDuration
-  localSettings.shortBreakDuration = newSettings.shortBreakDuration
-  localSettings.longBreakDuration = newSettings.longBreakDuration
-}, { deep: true })
-
-// Duration adjustment functions
-const adjustDuration = (type: keyof typeof localSettings, delta: number, min: number, max: number) => {
-  const current = localSettings[type]
-  const newValue = Math.max(min, Math.min(max, current + delta))
-  localSettings[type] = newValue
-}
-
-const decreaseWorkDuration = () => adjustDuration('workDuration', -1, 1, 60)
-const increaseWorkDuration = () => adjustDuration('workDuration', 1, 1, 60)
-const decreaseShortBreak = () => adjustDuration('shortBreakDuration', -1, 1, 30)
-const increaseShortBreak = () => adjustDuration('shortBreakDuration', 1, 1, 30)
-const decreaseLongBreak = () => adjustDuration('longBreakDuration', -1, 1, 60)
-const increaseLongBreak = () => adjustDuration('longBreakDuration', 1, 1, 60)
-
-// Preset configurations
-const presets = {
-  classic: { workDuration: 25, shortBreakDuration: 5, longBreakDuration: 15 },
-  intense: { workDuration: 45, shortBreakDuration: 10, longBreakDuration: 20 },
-  light: { workDuration: 15, shortBreakDuration: 3, longBreakDuration: 10 },
-  marathon: { workDuration: 60, shortBreakDuration: 15, longBreakDuration: 30 }
-}
-
-const applyPreset = (presetName: keyof typeof presets) => {
-  const preset = presets[presetName]
-  localSettings.workDuration = preset.workDuration
-  localSettings.shortBreakDuration = preset.shortBreakDuration
-  localSettings.longBreakDuration = preset.longBreakDuration
-}
-
-const saveSettings = () => {
-  updateSettings(localSettings)
-  // Show success feedback
-  const saveBtn = document.querySelector('.save-btn') as HTMLButtonElement
-  if (saveBtn) {
-    const originalText = saveBtn.innerHTML
-    saveBtn.innerHTML = '✅ Saved!'
-    saveBtn.style.background = '#4CAF50'
-    setTimeout(() => {
-      saveBtn.innerHTML = originalText
-      saveBtn.style.background = ''
-    }, 2000)
-  }
-}
-
-const resetToDefaults = () => {
-  if (confirm('Are you sure you want to reset all settings to defaults?')) {
-    resetSettings()
-    localSettings.workDuration = settings.value.workDuration
-    localSettings.shortBreakDuration = settings.value.shortBreakDuration
-    localSettings.longBreakDuration = settings.value.longBreakDuration
-  }
-}
-</script>
 
 <style scoped>
 .settings-view {

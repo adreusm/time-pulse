@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import PomodoroTimer from '../components/PomodoroTimer.vue'
+import { useTheme } from '../composables/useTheme'
+
+const { isDarkMode, toggleTheme } = useTheme()
+</script>
+
 <template>
   <div class="timer-view">
     <div class="header">
@@ -15,13 +22,6 @@
     <PomodoroTimer />
   </div>
 </template>
-
-<script setup lang="ts">
-import PomodoroTimer from '../components/PomodoroTimer.vue'
-import { useTheme } from '../composables/useTheme'
-
-const { isDarkMode, toggleTheme } = useTheme()
-</script>
 
 <style scoped>
 .timer-view {
@@ -104,9 +104,5 @@ h1 {
     font-size: 2rem;
   }
   
-  .header-controls {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
 }
 </style>

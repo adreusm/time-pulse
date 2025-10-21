@@ -1,114 +1,3 @@
-<template>
-  <div class="pomodoro-timer">
-    <div class="timer-container">
-      <div class="timer-display">
-        <div class="time-circle">
-          <svg class="progress-ring" width="300" height="300">
-            <circle
-              class="progress-ring-circle"
-              stroke="#e0e0e0"
-              stroke-width="8"
-              fill="transparent"
-              r="140"
-              cx="150"
-              cy="150"
-            />
-            <circle
-              class="progress-ring-circle progress-ring-fill"
-              stroke="#ff6b6b"
-              stroke-width="8"
-              fill="transparent"
-              r="140"
-              cx="150"
-              cy="150"
-              :style="{ strokeDasharray: circumference, strokeDashoffset: strokeDashoffset }"
-            />
-          </svg>
-          <div class="time-text">
-            <div class="time">{{ formattedTime }}</div>
-            <div class="session-type">{{ currentSessionType }}</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="controls">
-        <button @click="toggleTimer" :class="['timer-btn', { active: isRunning }]">
-          {{ isRunning ? 'Pause' : 'Start' }}
-        </button>
-        <button @click="resetTimer" class="reset-btn">Reset</button>
-      </div>
-
-      <div class="session-controls">
-        <button 
-          @click="setSessionType('work')" 
-          :class="['session-btn', { active: sessionType === 'work' }]"
-        >
-          Work ({{ settings.workDuration }}m)
-        </button>
-        <button 
-          @click="setSessionType('shortBreak')" 
-          :class="['session-btn', { active: sessionType === 'shortBreak' }]"
-        >
-          Short Break ({{ settings.shortBreakDuration }}m)
-        </button>
-        <button 
-          @click="setSessionType('longBreak')" 
-          :class="['session-btn', { active: sessionType === 'longBreak' }]"
-        >
-          Long Break ({{ settings.longBreakDuration }}m)
-        </button>
-      </div>
-    </div>
-
-    <div class="sound-controls">
-      <h3>Background Sounds</h3>
-      <div class="sound-buttons">
-        <button 
-          @click="toggleSound('rain')" 
-          :class="['sound-btn', { active: activeSound === 'rain' }]"
-        >
-          🌧️ Rain
-        </button>
-        <button 
-          @click="toggleSound('campfire')" 
-          :class="['sound-btn', { active: activeSound === 'campfire' }]"
-        >
-          🔥 Campfire
-        </button>
-        <button 
-          @click="stopAllSounds" 
-          :class="['sound-btn', { active: activeSound === null }]"
-        >
-          🔇 None
-        </button>
-      </div>
-      <div class="volume-control">
-        <label for="volume">Volume: {{ Math.round(volume * 100) }}%</label>
-        <input 
-          id="volume"
-          type="range" 
-          min="0" 
-          max="1" 
-          step="0.1" 
-          v-model="volume"
-          @input="updateVolume"
-        />
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat">
-        <span class="stat-label">Completed Sessions:</span>
-        <span class="stat-value">{{ completedSessions }}</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Total Time:</span>
-        <span class="stat-value">{{ formatTotalTime(totalTime) }}</span>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useSettings } from '../composables/useTheme'
@@ -246,7 +135,7 @@ const playCompletionSound = () => {
   oscillator.connect(gainNode)
   gainNode.connect(audioContext.destination)
   
-  oscillator.frequency.value = 800
+  oscillator.frequency.value = 3000
   oscillator.type = 'sine'
   
   gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
@@ -325,6 +214,117 @@ onUnmounted(() => {
   stopAllSounds()
 })
 </script>
+
+<template>
+  <div class="pomodoro-timer">
+    <div class="timer-container">
+      <div class="timer-display">
+        <div class="time-circle">
+          <svg class="progress-ring" width="300" height="300">
+            <circle
+              class="progress-ring-circle"
+              stroke="#e0e0e0"
+              stroke-width="8"
+              fill="transparent"
+              r="140"
+              cx="150"
+              cy="150"
+            />
+            <circle
+              class="progress-ring-circle progress-ring-fill"
+              stroke="#ff6b6b"
+              stroke-width="8"
+              fill="transparent"
+              r="140"
+              cx="150"
+              cy="150"
+              :style="{ strokeDasharray: circumference, strokeDashoffset: strokeDashoffset }"
+            />
+          </svg>
+          <div class="time-text">
+            <div class="time">{{ formattedTime }}</div>
+            <div class="session-type">{{ currentSessionType }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button @click="toggleTimer" :class="['timer-btn', { active: isRunning }]">
+          {{ isRunning ? 'Pause' : 'Start' }}
+        </button>
+        <button @click="resetTimer" class="reset-btn">Reset</button>
+      </div>
+
+      <div class="session-controls">
+        <button 
+          @click="setSessionType('work')" 
+          :class="['session-btn', { active: sessionType === 'work' }]"
+        >
+          Work ({{ settings.workDuration }}m)
+        </button>
+        <button 
+          @click="setSessionType('shortBreak')" 
+          :class="['session-btn', { active: sessionType === 'shortBreak' }]"
+        >
+          Short Break ({{ settings.shortBreakDuration }}m)
+        </button>
+        <button 
+          @click="setSessionType('longBreak')" 
+          :class="['session-btn', { active: sessionType === 'longBreak' }]"
+        >
+          Long Break ({{ settings.longBreakDuration }}m)
+        </button>
+      </div>
+    </div>
+
+    <div class="sound-controls">
+      <h3>Background Sounds</h3>
+      <div class="sound-buttons">
+        <button 
+          @click="toggleSound('rain')" 
+          :class="['sound-btn', { active: activeSound === 'rain' }]"
+        >
+          🌧️ Rain
+        </button>
+        <button 
+          @click="toggleSound('campfire')" 
+          :class="['sound-btn', { active: activeSound === 'campfire' }]"
+        >
+          🔥 Campfire
+        </button>
+        <button 
+          @click="stopAllSounds" 
+          :class="['sound-btn', { active: activeSound === null }]"
+        >
+          🔇 None
+        </button>
+      </div>
+      <div class="volume-control">
+        <label for="volume">Volume: {{ Math.round(volume * 100) }}%</label>
+        <input 
+          id="volume"
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.1" 
+          v-model="volume"
+          @input="updateVolume"
+        />
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">Completed Sessions:</span>
+        <span class="stat-value">{{ completedSessions }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Total Time:</span>
+        <span class="stat-value">{{ formatTotalTime(totalTime) }}</span>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .pomodoro-timer {
@@ -497,7 +497,7 @@ onUnmounted(() => {
   border-radius: 3px;
   background: var(--bg-hover);
   outline: none;
-  -webkit-appearance: none;
+  appearance: none;
 }
 
 .volume-control input[type="range"]::-webkit-slider-thumb {
@@ -551,11 +551,6 @@ onUnmounted(() => {
   }
   
   .session-controls {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .sound-buttons {
     flex-direction: column;
     align-items: center;
   }

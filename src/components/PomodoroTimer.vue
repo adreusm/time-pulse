@@ -559,5 +559,34 @@ onUnmounted(() => {
     flex-direction: column;
     gap: 1rem;
   }
+
+  .progress-ring-circle {
+    r: 110px;
+  }
+}
+
+@media (max-width: 430px) {
+  .progress-ring {
+    width: 100%;
+    }
+
+  .progress-ring-circle {
+    r: 100px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .session-controls {
+    display: flex;
+    flex-direction: column;
+    align-items:normal;
+    margin: 0 0.5rem;
+    gap: 1rem;
+  }
 }
 </style>
